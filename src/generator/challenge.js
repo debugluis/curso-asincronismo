@@ -8,18 +8,21 @@ const fetchData = async (urlApi) => {
     return data;
 }
 
-const anotherFn = async (urlApi) => {
+async function* anotherFn (urlApi) {
     try {
         const products = await fetchData(`${urlApi}/products`);
-        console.log(products);
         const product = await fetchData(`${urlApi}/products/${products[0].id}`);
-        console.log(product.title);
         const category = await fetchData(`${urlApi}/categories/${product.category.id}`);
-        console.log(category.name);
+        
+        yield console.log(product.title);
+        yield console.log(category.name);
     }
     catch (error) {
         console.error('error');
     }
 }
 
-anotherFn(API);
+let af = anotherFn(API);
+
+af.next();
+af.next();
